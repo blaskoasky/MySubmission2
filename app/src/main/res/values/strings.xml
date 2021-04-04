@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Sub2 - IriantoMauduta</string>
+    <string name="username">Username</string>
+    <string name="name">Name</string>
+    <string name="location">Location: %s </string>
+    <string name="repository">Repository: %s </string>
+    <string name="company">Company: %s </string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
+    <string name="avatar">Avatar</string>
+    <string name="change_language_settings">Change Language Settings</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
