@@ -4,14 +4,10 @@ import android.app.SearchManager
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mysubmission2.databinding.ActivityMainBinding
 import com.loopj.android.http.AsyncHttpClient
@@ -26,6 +22,8 @@ import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     var list: ArrayList<UserData> = ArrayList()
+
+    val tokenz = "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"
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: ListUserAdapter
@@ -43,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         adapter = ListUserAdapter(list)
         binding.rvMain.setHasFixedSize(true)
 
+        searchUser()
         getUser()
     }
 
@@ -56,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         binding.progressBar.visibility = View.VISIBLE
         val aClient = AsyncHttpClient()
         val url = "https://api.github.com/users"
-        aClient.addHeader("Authorization", "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")
+        aClient.addHeader("Authorization", tokenz)
         aClient.addHeader("User-Agent", "request")
         aClient.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>, responseBody: ByteArray) {
@@ -95,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
         val aClient = AsyncHttpClient()
         val url = "https://api.github.com/search/users?q=$q"
-        aClient.addHeader("Authorization", "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")
+        aClient.addHeader("Authorization", tokenz)
         aClient.addHeader("User-Agent", "request")
         aClient.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>, responseBody: ByteArray) {
@@ -132,12 +131,30 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    fun searchUser() {
+        binding.search.setOnQueryTextListener(object : SearchView.OnQueryTextListener, androidx.appcompat.widget.SearchView.OnQueryTextListener {
+        override fun onQueryTextSubmit(query: String): Boolean {
+            if (query.isEmpty()) {
+                return true
+            } else {
+                list.clear()
+                userQuery(query)
+            }
+            return true
+        }
+
+        override fun onQueryTextChange(newText: String): Boolean {
+            return false
+        }
+    })
+    }
+
     fun setUser(id: String?){
         binding.progressBar.visibility = View.VISIBLE
 
         val aClient = AsyncHttpClient()
         val url = "https://api.github.com/users/$id"
-        aClient.addHeader("Authorization", "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")
+        aClient.addHeader("Authorization", tokenz)
         aClient.addHeader("User-Agent", "request")
         aClient.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(statusCode: Int, headers: Array<Header>, responseBody: ByteArray) {
